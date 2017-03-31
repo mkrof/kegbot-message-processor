@@ -9,7 +9,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
       },
       json: true
-    }).then(taps => taps.map(tap => {
+    }).then(taps => taps.objects.map(tap => {
         const beverage = tap.current_keg.beverage;
         resolve(`A fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
       }))
