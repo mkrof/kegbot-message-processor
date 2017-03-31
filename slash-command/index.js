@@ -5,12 +5,12 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   if (!question || typeof question !== 'string') {
     resolve(`Good day to you, ${ userName }. :beer:`);
   } else if (question.toLowerCase().indexOf('help' > -1)) {
-    resolve(```
+    resolve(`
       Good day to you, ${ userName }. :beer:\n
       Try asking me something like:\n
-      - What's on tap?
+      - What's on tap?\n
       - How much is left?
-    ```);
+    `);
   } else if (question.toLowerCase().indexOf('tapdance' > -1)) {
     resolve(`:dancers:`);
   } else if (question.toLowerCase().indexOf('tap') > -1) {
@@ -25,7 +25,6 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         resolve(`A fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
       }))
       .catch(() => resolve('Contact technical support!'));
-  } else if  {
   }
 });
 
