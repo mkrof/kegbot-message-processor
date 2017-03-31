@@ -6,7 +6,7 @@ module.exports = function (context, req) {
   });
 
   context.log(req.body);
-  context.res(req.body);
+  context.res = response(req.body);
   
 	// if (req.body && req.body.token) {
     // context.res = response(`Token: ${ req.body.token }`);
