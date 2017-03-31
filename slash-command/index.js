@@ -27,6 +27,32 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         resolve(`A fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
       }))
       .catch(() => resolve('Contact technical support!'));
+  } else if (
+    question.toLowerCase().indexOf('status') > -1
+    || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
+    || (question.toLowerCase().indexOf('much') > -1 && question.toLowerCase().indexOf('left') > -1)
+  ) {
+    request({
+      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
+      qs: {
+        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+      },
+      json: true
+    }).then(kegs => kegs.objects.map(keg => {
+        const remaining = keg.percent_full;
+        const emoji = (percentFull => {
+          let e = ':scream:';
+          if (percentFull > 10) e = ':dizzy_face';
+          else if (percentFull > 20) e = ':cold_sweat:';
+          else if (percentFull > 40) e = ':worried:';
+          else if (percentFull > 60) e = ':slightly_smiling_face:';
+          else if (percentFull > 85) e = ':smile:';
+          return e;
+        })(remaining);
+        resolve(`${ remaining.toPrecision(3) } ${ emoji }`);
+      }))
+      .catch(() => resolve('Contact technical support!'));
+
   }
 });
 
