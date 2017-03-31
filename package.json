@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/mkrof/kegbot-message-processor/issues"
   },
-  "homepage": "https://github.com/mkrof/kegbot-message-processor#readme"
+  "homepage": "https://github.com/mkrof/kegbot-message-processor#readme",
+  "dependencies": {
+    "qs": "^6.4.0",
+    "request": "^2.81.0",
+    "request-promise-native": "^1.0.3"
+  }
 }
