@@ -1,5 +1,4 @@
 module.exports = function (context, req) {
-	context.log('JavaScript HTTP trigger function processed a request.');
 
   const response = text => ({
     response_type: 'in_channel',
