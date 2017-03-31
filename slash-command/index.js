@@ -42,11 +42,11 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         const remaining = keg.percent_full;
         const emoji = (percentFull => {
           let e = ':scream:';
-          if (percentFull > 10) e = ':dizzy_face';
-          else if (percentFull > 20) e = ':cold_sweat:';
-          else if (percentFull > 40) e = ':worried:';
-          else if (percentFull > 60) e = ':slightly_smiling_face:';
-          else if (percentFull > 85) e = ':smile:';
+          if (percentFull > 10) e = ':dizzy_face:';
+          if (percentFull > 20) e = ':cold_sweat:';
+          if (percentFull > 40) e = ':worried:';
+          if (percentFull > 60) e = ':slightly_smiling_face:';
+          if (percentFull > 85) e = ':smile:';
           return e;
         })(remaining);
         resolve(`${ remaining.toPrecision(3) } ${ emoji }`);
