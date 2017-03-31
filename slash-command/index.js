@@ -11,7 +11,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
       - What's on tap?\n
       - How much is left?
     `);
-  } else if (question.toLowerCase().indexOf('tapdance' > -1)) {
+  } else if (question.toLowerCase().indexOf('dance' > -1)) {
     resolve(`:dancers:`);
   } else if (question.toLowerCase().indexOf('tap') > -1) {
     request({
