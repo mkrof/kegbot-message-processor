@@ -29,14 +29,16 @@ module.exports = function (context, req) {
 
   if (body.token === 'uMdQWoCNsKmB3lPTbvHaEA31') {
     getAnswer(body.text, body.user_name)
-      .then(answer => context.res = answer)
-      .catch(err => context.log(err));
+      .then(answer => {
+        context.res = answer;
+        context.done();
+      })
+      .catch(err => {
+        context.log(err);
+        context.done();
+      });
   } else {
     context.res = 'Invalid token.'
+    context.done();
   }
-
-  context.log(req.body);
-  context.res = response(req.body);
-
-	context.done();
 };
