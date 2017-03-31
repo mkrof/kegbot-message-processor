@@ -5,18 +5,13 @@ module.exports = function (context, req) {
     text
   });
 
-	if (req.body && req.body.token) {
-    context.res = response(`Token: ${ req.body.token }`);
-		// context.res = {
-		// 	// status: 200, /* Defaults to 200 */
-		// 	body: "Token: " + req.body.token
-		// };
-	} else {
-    context.res = response('Token required.');
-		// context.res = {
-		// 	status: 400,
-		// 	body: "Please pass a token on the request body"
-		// };
-	}
+  context.log(req.body);
+  context.res(req.body);
+  
+	// if (req.body && req.body.token) {
+    // context.res = response(`Token: ${ req.body.token }`);
+	// } else {
+    // context.res = response('Token required.');
+	// }
 	context.done();
 };
