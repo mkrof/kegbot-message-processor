@@ -3,8 +3,13 @@ const request = require('request-promise-native');
 
 const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   if (question && question.toLowerCase().indexOf('tap') > -1) {
-    request('http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/taps')
-      .then(taps => taps.map(tap => {
+    request({
+      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/taps',
+      qs: {
+        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+      },
+      json: true
+    }).then(taps => taps.map(tap => {
         const beverage = tap.current_keg.beverage;
         resolve(`A fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
       }))
