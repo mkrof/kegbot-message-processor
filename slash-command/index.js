@@ -4,6 +4,8 @@ const request = require('request-promise-native');
 const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   if (!question || typeof question !== 'string') {
     resolve(`Good day to you, ${ userName }. :beer:`);
+  } else if (question.toLowerCase().indexOf('cheers' > -1)) {
+    resolve(`:beers:`);
   } else if (question.toLowerCase().indexOf('help' > -1)) {
     resolve(`
       Good day to you, ${ userName }. :beer:\n
