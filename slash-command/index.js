@@ -15,7 +15,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
       }))
       .catch(() => resolve('Contact technical support!'));
   } else {
-    resolve(`Good day you you, ${ userName }`);
+    resolve(`Good day to you, ${ userName }`);
   }
 });
 
