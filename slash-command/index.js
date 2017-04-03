@@ -27,7 +27,8 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         return `${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`;
       }))
       .then(messages => {
-        resolve(messages.join('\n'));
+        const response = messages.length > 1 ? `A few selections, ${ userName }:\n` : '';
+        resolve(response + messages.join('\n'));
       })
       .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
   } else if (
