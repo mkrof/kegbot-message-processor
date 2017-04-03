@@ -49,7 +49,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
           if (percentFull > 85) e = ':smile:';
           return e;
         })(remaining);
-        resolve(`*${ remaining.toPrecision(3) } percent remaining! ${ emoji }`);
+        resolve(`*${ remaining.toPrecision(3) }%* remaining! ${ emoji }`);
       }))
       .catch(() => resolve('Contact technical support!'));
 
