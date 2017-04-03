@@ -24,8 +24,11 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
       json: true
     }).then(taps => taps.objects.map(tap => {
         const beverage = tap.current_keg.beverage;
-        resolve(`${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
+        return `${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`;
       }))
+      .then(messages => {
+        resolve(messages.join('\n'));
+      })
       .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
   } else if (
     question.toLowerCase().indexOf('status') > -1
