@@ -24,9 +24,9 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
       json: true
     }).then(taps => taps.objects.map(tap => {
         const beverage = tap.current_keg.beverage;
-        resolve(`A fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
+        resolve(`${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
       }))
-      .catch(() => resolve('Contact technical support!'));
+      .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
   } else if (
     question.toLowerCase().indexOf('status') > -1
     || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
