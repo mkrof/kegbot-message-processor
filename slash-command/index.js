@@ -52,7 +52,8 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         resolve(`*${ remaining.toPrecision(3) }%* remaining! ${ emoji }`);
       }))
       .catch(() => resolve('Contact technical support!'));
-
+  } else {
+    resolve(`:beers:`);
   }
 });
 
