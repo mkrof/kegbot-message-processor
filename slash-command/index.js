@@ -24,9 +24,13 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
       json: true
     }).then(taps => taps.objects.map(tap => {
         const beverage = tap.current_keg.beverage;
-        resolve(`A fine ${ beverage.style } produced by ${ beverage.producer.name }.`);
+        return `- ${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`;
       }))
-      .catch(() => resolve('Contact technical support!'));
+      .then(messages => {
+        const response = messages.length > 1 ? `A few selections, ${ userName }:\n` : '';
+        resolve(response + messages.join('\n'));
+      })
+      .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
   } else if (
     question.toLowerCase().indexOf('status') > -1
     || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
@@ -38,7 +42,8 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
       },
       json: true
-    }).then(kegs => kegs.objects.map(keg => {
+    }).then(kegs => kegs.objects.filter(keg => keg.online))
+      .then(online => online.map(keg => {
         const remaining = keg.percent_full;
         const emoji = (percentFull => {
           let e = ':scream:';
@@ -49,10 +54,14 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
           if (percentFull > 85) e = ':smile:';
           return e;
         })(remaining);
-        resolve(`*${ remaining.toPrecision(3) } percent remaining! ${ emoji }`);
+        return `- ${ keg.beverage.name } *${ remaining.toPrecision(3) }%* remaining! ${ emoji }`;
       }))
-      .catch(() => resolve('Contact technical support!'));
-
+      .then(messages => {
+        resolve(messages.join('\n'));
+      })
+      .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
+  } else {
+    resolve(`:beers:`);
   }
 });
 
