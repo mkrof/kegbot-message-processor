@@ -1,5 +1,6 @@
 const qs = require('qs');
 const request = require('request-promise-native');
+const services = require('../core/services');
 
 const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   if (!question || typeof question !== 'string') {
@@ -16,13 +17,8 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   } else if (question.toLowerCase().indexOf('dance') > -1) {
     resolve(`:dancers:`);
   } else if (question.toLowerCase().indexOf('tap') > -1) {
-    request({
-      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/taps',
-      qs: {
-        api_key: process.env.KEGBOT_API_KEY
-      },
-      json: true
-    }).then(taps => taps.objects.map(tap => {
+    services.kegbot.taps()
+      .then(taps => taps.objects.map(tap => {
         const beverage = tap.current_keg.beverage;
         return `- ${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`;
       }))
@@ -36,13 +32,8 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
     || (question.toLowerCase().indexOf('much') > -1 && question.toLowerCase().indexOf('left') > -1)
   ) {
-    request({
-      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
-      qs: {
-        api_key: process.env.KEGBOT_API_KEY
-      },
-      json: true
-    }).then(kegs => kegs.objects.filter(keg => keg.online))
+    services.kegbot.kegs()
+      .then(kegs => kegs.objects.filter(keg => keg.online))
       .then(online => online.map(keg => {
         const remaining = keg.percent_full;
         const emoji = (percentFull => {
