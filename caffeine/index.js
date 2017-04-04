@@ -13,7 +13,7 @@ module.exports = function (context, timer) {
     payload: JSON.stringify({
       username: 'Kegbot',
       icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2017-03-31/162947150962_eb39c4654cee17830ae7_72.png',
-      text: messages.join('\n')
+      text: ':rotating_light:\n' + messages.join('\n')
     })
   });
 
@@ -25,8 +25,18 @@ module.exports = function (context, timer) {
       },
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
-      .then(online => online.map(keg => `${ keg.beverage.name }: *${ keg.percent_full }%*`))
-      .then(messages => request.post(webHookUrl, { form: getPayload(messages) })),
+      .then(online => online.map(keg => {
+        if (keg.percent_full < 70) {
+          return `${ keg.beverage.name }: *${ keg.percent_full.toPrecision(3) }%*`;
+        } 
+      })
+      .then(messages => {
+        if (messages && messages.length > 0) {
+          return request.post(webHookUrl, { form: getPayload(messages) })
+        } else {
+          return 'Enough beer.'
+        }
+      }),
     request.get(slashCommand)
   ]).then(() => {
       context.log('success');
