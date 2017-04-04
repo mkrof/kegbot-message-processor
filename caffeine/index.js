@@ -6,13 +6,22 @@ const webHookUrl = 'https://hooks.slack.com/services/T4P9V8ZPG/B4U8EU8UD/x729JYW
 
 module.exports = function (context, timer) {
 
-  request.post(webHookUrl,{
-    form: {
-      payload: {
-        text: 'From Azure'
-      }
+  const message = {
+    payload: {
+      username: 'Kegbot',
+      icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2017-03-31/162947150962_eb39c4654cee17830ae7_72.png',
+      text: "Hello from Azure!"
     }
-  }).then(() => context.done());
+  }
+
+  const requests = [
+    request.post(webHookUrl,{ form: JSON.stringify(message) }),
+    request.get(slashCommand);
+  ];
+
+  Promise.all(requests)
+    .then(context.done)
+    .catch(err => console.log(err.message));
 
   // https.get(slashCommand, res => {
   //   context.log(`SUCCESS ${ res }` );
