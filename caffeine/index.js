@@ -7,15 +7,28 @@ const webHookUrl = 'https://hooks.slack.com/services/T4P9V8ZPG/B4U8EU8UD/x729JYW
 module.exports = function (context, timer) {
 
   const form = {
+  };
+
+  const getPayload = messages => {
     payload: JSON.stringify({
       username: 'Kegbot',
       icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2017-03-31/162947150962_eb39c4654cee17830ae7_72.png',
-      text: "Hello from Azure!"
+      text: messages.join('\n')
     })
   };
 
   Promise.all([
-    request.post(webHookUrl,{ form }),
+    request({
+      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
+      qs: {
+        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+      },
+      json: true
+    }).then(kegs => kegs.objects.filter(keg => keg.online))
+      .then(online => online.map(keg => {
+        `${ keg.beerverage.name }: *${ keg.percent_full }%*`;
+      }))
+      .then(messages => request.post(webHookUrl, { form: getPayload(messages) })),
     request.get(slashCommand)
   ]).then(() => {
       context.log('success');
