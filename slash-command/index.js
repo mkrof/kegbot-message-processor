@@ -31,7 +31,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     request({
       uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
       qs: {
-        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+        api_key: process.env.KEGBOT_API_KEY
       },
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
