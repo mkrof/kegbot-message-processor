@@ -9,13 +9,13 @@ module.exports = function (context, timer) {
   const form = {
   };
 
-  const getPayload = messages => {
+  const getPayload = messages => ({
     payload: JSON.stringify({
       username: 'Kegbot',
       icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2017-03-31/162947150962_eb39c4654cee17830ae7_72.png',
       text: messages.join('\n')
     })
-  };
+  });
 
   Promise.all([
     request({
@@ -25,9 +25,7 @@ module.exports = function (context, timer) {
       },
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
-      .then(online => online.map(keg => {
-        `${ keg.beverage.name }: *${ keg.percent_full }%*`;
-      }))
+      .then(online => online.map(keg => `${ keg.beverage.name }: *${ keg.percent_full }%*`))
       .then(messages => request.post(webHookUrl, { form: getPayload(messages) })),
     request.get(slashCommand)
   ]).then(() => {
