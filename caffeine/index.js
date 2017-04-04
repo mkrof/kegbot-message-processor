@@ -12,10 +12,10 @@ module.exports = function (context, timer) {
         text: 'From Azure'
       }
     }
-  });
+  }).then(() => context.done());
 
-  https.get(slashCommand, res => {
-    context.log(`SUCCESS ${ res }` );
-    context.done();
-  }).on('error', err => context.log(`ERROR: ${ err }`));
+  // https.get(slashCommand, res => {
+  //   context.log(`SUCCESS ${ res }` );
+  //   context.done();
+  // }).on('error', err => context.log(`ERROR: ${ err }`));
 }
