@@ -20,8 +20,14 @@ module.exports = function (context, timer) {
   ];
 
   Promise.all(requests)
-    .then(context.done)
-    .catch(err => console.log(err.message));
+    .then(() => {
+      context.log('success');
+      context.done()
+    })
+    .catch(err => {
+      context.log(err.message);
+      context.done();
+    });
 
   // https.get(slashCommand, res => {
   //   context.log(`SUCCESS ${ res }` );
