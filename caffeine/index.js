@@ -26,7 +26,7 @@ module.exports = function (context, timer) {
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
       .then(online => online.map(keg => {
-        if (keg.percent_full < 70) {
+        if (keg.percent_full < 20) {
           return `${ keg.beverage.name }: *${ keg.percent_full.toPrecision(3) }%*`;
         } 
       }))
