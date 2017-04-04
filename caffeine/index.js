@@ -16,7 +16,7 @@ module.exports = function (context, timer) {
 
   const requests = [
     request.post(webHookUrl,{ form: JSON.stringify(message) }),
-    request.get(slashCommand);
+    request.get(slashCommand)
   ];
 
   Promise.all(requests)
