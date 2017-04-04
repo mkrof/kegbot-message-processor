@@ -12,15 +12,12 @@ module.exports = function (context, timer) {
       icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2017-03-31/162947150962_eb39c4654cee17830ae7_72.png',
       text: "Hello from Azure!"
     })
-  }
+  };
 
-  const requests = [
-    request.post(webHookUrl, { form }),
+  Promise.all([
+    request.post(webHookUrl,{ form }),
     request.get(slashCommand)
-  ];
-
-  Promise.all(requests)
-    .then(() => {
+  ]).then(() => {
       context.log('success');
       context.done()
     })
