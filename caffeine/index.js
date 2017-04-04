@@ -8,7 +8,9 @@ module.exports = function (context, timer) {
 
   request.post(webHookUrl,{
     form: {
-      text: 'From Azure'
+      payload: {
+        text: 'From Azure'
+      }
     }
   });
 
