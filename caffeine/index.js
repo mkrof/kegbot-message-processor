@@ -32,9 +32,10 @@ module.exports = function (context, timer) {
       }))
       .then(messages => {
         if (messages && messages.length > 0) {
-          return request.post(webHookUrl, { form: getPayload(messages) })
+          //return request.post(webHookUrl, { form: getPayload(messages) })
+          return 'Post to slack';
         } else {
-          return 'Enough beer.'
+          return 'Enough beer.';
         }
       }),
     request.get(slashCommand)
