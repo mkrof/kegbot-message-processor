@@ -27,11 +27,37 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
     || (question.toLowerCase().indexOf('much') > -1 && question.toLowerCase().indexOf('left') > -1)
   ) {
+    request({
+      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
+      qs: {
+        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+      },
+      json: true
+    }).then(kegs => kegs.objects.filter(keg => keg.online))
+      .then(online => online.map(keg => {
+        const remaining = keg.percent_full;
+        const emoji = (percentFull => {
+          let e = ':scream:';
+          if (percentFull > 10) e = ':dizzy_face:';
+          if (percentFull > 20) e = ':cold_sweat:';
+          if (percentFull > 40) e = ':worried:';
+          if (percentFull > 60) e = ':slightly_smiling_face:';
+          if (percentFull > 85) e = ':smile:';
+          return e;
+        })(remaining);
+        return `- ${ keg.beverage.name } *${ remaining.toPrecision(3) }%* remaining! ${ emoji }`;
+      }))
+      .then(messages => {
+        resolve(messages.join('\n'));
+      })
+      .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
+    /*
     services.kegbot.kegs()
       .then(kegs => kegs.objects.filter(keg => keg.online))
       .then(online => online.map(keg => text.kegStatus(keg.beverage.name, keg.percent_full)))
       .then(messages => resolve(messages.join('\n')))
       .catch(() => resolve(text.technicalSupport()));
+    */
   } else {
     resolve(text.cheers());
   }
