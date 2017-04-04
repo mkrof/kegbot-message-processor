@@ -19,7 +19,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     request({
       uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/taps',
       qs: {
-        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+        api_key: process.env.KEGBOT_API_KEY
       },
       json: true
     }).then(taps => taps.objects.map(tap => {
@@ -39,7 +39,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     request({
       uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
       qs: {
-        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+        api_key: process.env.KEGBOT_API_KEY
       },
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
@@ -74,7 +74,7 @@ module.exports = function (context, req) {
 
   const body = qs.parse(req.body);
 
-  if (body.token === 'uMdQWoCNsKmB3lPTbvHaEA31') {
+  if (body.token === process.env.SLACK_TOKEN) {
     getAnswer(body.text, body.user_name)
       .then(answer => {
         context.res = response(answer);
