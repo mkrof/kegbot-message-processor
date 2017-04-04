@@ -26,7 +26,7 @@ module.exports = function (context, timer) {
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
       .then(online => online.map(keg => {
-        `${ keg.beerverage.name }: *${ keg.percent_full }%*`;
+        `${ keg.berverage.name }: *${ keg.percent_full }%*`;
       }))
       .then(messages => request.post(webHookUrl, { form: getPayload(messages) })),
     request.get(slashCommand)
