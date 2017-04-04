@@ -1,5 +1,4 @@
 const qs = require('qs');
-const request = require('request-promise-native');
 const services = require('../core/services');
 
 const getAnswer = (question, userName) => new Promise((resolve, reject) => {
@@ -57,18 +56,11 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
 });
 
 module.exports = function (context, req) {
-  const response = text => ({
-    response_type: 'in_channel',
-    mrkdwn: true,
-    text
-  });
-
   const body = qs.parse(req.body);
-
   if (body.token === process.env.SLACK_TOKEN) {
     getAnswer(body.text, body.user_name)
       .then(answer => {
-        context.res = response(answer);
+        context.res = services.slack.message(answer);
         context.done();
       })
       .catch(err => {
