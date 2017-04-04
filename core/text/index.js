@@ -1,3 +1,13 @@
+const percentEmoji = percent => {
+  let e = ':scream:';
+  if (percent > 10) e = ':dizzy_face:';
+  if (percent > 20) e = ':cold_sweat:';
+  if (percent > 40) e = ':worried:';
+  if (percent > 60) e = ':slightly_smiling_face:';
+  if (percent > 85) e = ':smile:';
+  return e;
+};
+
 module.exports = {
   greeting: username => `Good day to you, ${ username }. :beer:`,
   cheers: () => `:beers:`,
@@ -12,13 +22,7 @@ module.exports = {
    `- ${ name }, a fine ${ style } produced by ${ producer }.`
   ),
   kegStatus: (name, percent) => {
-    let e = ':scream:';
-    if (percent > 10) e = ':dizzy_face:';
-    if (percent > 20) e = ':cold_sweat:';
-    if (percent > 40) e = ':worried:';
-    if (percent > 60) e = ':slightly_smiling_face:';
-    if (percent > 85) e = ':smile:';
-    return `- ${ name } *${ percent.toPrecision(3) }%* remaining! ${ e }`;
+    return `- ${ name } *${ percent.toPrecision(3) }%* remaining! ${ percentEmoji(e) }`;
   },
   technicalSupport: () => ':electric_plug::zap:Contact technical support!',
 };
