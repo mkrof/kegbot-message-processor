@@ -18,6 +18,7 @@ module.exports = function (context, timer) {
   });
 
   Promise.all([
+    /*
     request({
       uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
       qs: {
@@ -38,6 +39,7 @@ module.exports = function (context, timer) {
           return 'Enough beer.';
         }
       }),
+    */
     request.get(slashCommand)
   ]).then(() => {
       context.log('success');
