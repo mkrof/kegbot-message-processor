@@ -29,7 +29,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     || (question.toLowerCase().indexOf('much') > -1 && question.toLowerCase().indexOf('left') > -1)
   ) {
     request({
-      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
+      uri: process.env.KEGBOT_SERVER_URL + '/api/kegs',
       qs: {
         api_key: process.env.KEGBOT_API_KEY
       },
