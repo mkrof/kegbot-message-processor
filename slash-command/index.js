@@ -1,45 +1,37 @@
 const qs = require('qs');
+const services = require('../core/services');
+const text = require('../core/text');
 const request = require('request-promise-native');
 
 const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   if (!question || typeof question !== 'string') {
-    resolve(`Good day to you, ${ userName }. :beer:`);
+    resolve(text.greeting(userName));
   } else if (question.toLowerCase().indexOf('cheers') > -1) {
-    resolve(`:beers:`);
+    resolve(text.cheers());
   } else if (question.toLowerCase().indexOf('help') > -1) {
-    resolve(`
-      Good day to you, ${ userName }. :beer:\n
-      Try asking me something like:\n
-      - What's on tap?\n
-      - How much is left?
-    `);
+    resolve(text.help(userName));
   } else if (question.toLowerCase().indexOf('dance') > -1) {
-    resolve(`:dancers:`);
+    resolve(text.dance(userName));
   } else if (question.toLowerCase().indexOf('tap') > -1) {
-    request({
-      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/taps',
-      qs: {
-        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
-      },
-      json: true
-    }).then(taps => taps.objects.map(tap => {
+    services.kegbot.taps()
+      .then(taps => taps.objects.map(tap => {
         const beverage = tap.current_keg.beverage;
-        return `- ${ beverage.name }, a fine ${ beverage.style } produced by ${ beverage.producer.name }.`;
+        return text.drinkDescription(beverage.name, beverage.style, beverage.producer.name);
       }))
       .then(messages => {
         const response = messages.length > 1 ? `A few selections, ${ userName }:\n` : '';
         resolve(response + messages.join('\n'));
       })
-      .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
+      .catch(() => resolve(text.technicalSupport()));
   } else if (
     question.toLowerCase().indexOf('status') > -1
     || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
     || (question.toLowerCase().indexOf('much') > -1 && question.toLowerCase().indexOf('left') > -1)
   ) {
     request({
-      uri:'http://kegberry-olson.eastus2.cloudapp.azure.com:8000/api/kegs',
+      uri: process.env.KEGBOT_SERVER_URL + '/api/kegs',
       qs: {
-        api_key: '3a2e3bb8409d4d1a9913e7f9bd166583'
+        api_key: process.env.KEGBOT_API_KEY
       },
       json: true
     }).then(kegs => kegs.objects.filter(keg => keg.online))
@@ -60,24 +52,24 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         resolve(messages.join('\n'));
       })
       .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
+    /*
+    services.kegbot.kegs()
+      .then(kegs => kegs.objects.filter(keg => keg.online))
+      .then(online => online.map(keg => text.kegStatus(keg.beverage.name, keg.percent_full)))
+      .then(messages => resolve(messages.join('\n')))
+      .catch(() => resolve(text.technicalSupport()));
+    */
   } else {
-    resolve(`:beers:`);
+    resolve(text.cheers());
   }
 });
 
 module.exports = function (context, req) {
-  const response = text => ({
-    response_type: 'in_channel',
-    mrkdwn: true,
-    text
-  });
-
   const body = qs.parse(req.body);
-
-  if (body.token === 'uMdQWoCNsKmB3lPTbvHaEA31') {
+  if (body.token === process.env.SLACK_TOKEN) {
     getAnswer(body.text, body.user_name)
       .then(answer => {
-        context.res = response(answer);
+        context.res = services.slack.message(answer);
         context.done();
       })
       .catch(err => {
