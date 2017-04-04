@@ -6,8 +6,8 @@ const requestOpts = uri => ({
   json: true
 });
 
-const taps = () => request(requestOptions(`${ process.env.KEGBOT_SERVER_URL }/api/taps`));
-const kegs = () => request(requestOptions(`${ process.env.KEGBOT_SERVER_URL }/api/kegs`));
+const taps = () => request(requestOpts(`${ process.env.KEGBOT_SERVER_URL }/api/taps`));
+const kegs = () => request(requestOpts(`${ process.env.KEGBOT_SERVER_URL }/api/kegs`));
 
 module.exports = {
   taps,
