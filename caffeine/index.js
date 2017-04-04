@@ -29,7 +29,7 @@ module.exports = function (context, timer) {
         if (keg.percent_full < 70) {
           return `${ keg.beverage.name }: *${ keg.percent_full.toPrecision(3) }%*`;
         } 
-      })
+      }))
       .then(messages => {
         if (messages && messages.length > 0) {
           return request.post(webHookUrl, { form: getPayload(messages) })
