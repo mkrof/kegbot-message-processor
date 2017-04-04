@@ -1,6 +1,7 @@
 const qs = require('qs');
 const services = require('../core/services');
 const text = require('../core/text');
+const request = require('request-promise-native');
 
 const getAnswer = (question, userName) => new Promise((resolve, reject) => {
   if (!question || typeof question !== 'string') {
