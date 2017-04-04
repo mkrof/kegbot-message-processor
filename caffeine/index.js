@@ -6,16 +6,16 @@ const webHookUrl = 'https://hooks.slack.com/services/T4P9V8ZPG/B4U8EU8UD/x729JYW
 
 module.exports = function (context, timer) {
 
-  const message = {
-    payload: {
+  const form = {
+    payload: JSON.stringify({
       username: 'Kegbot',
       icon_url: 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2017-03-31/162947150962_eb39c4654cee17830ae7_72.png',
       text: "Hello from Azure!"
-    }
+    })
   }
 
   const requests = [
-    request.post(webHookUrl,{ form: JSON.stringify(message) }),
+    request.post(webHookUrl, { form }),
     request.get(slashCommand)
   ];
 
