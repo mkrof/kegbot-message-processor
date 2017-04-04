@@ -2,7 +2,7 @@ const slack = require('../core/services/slack');
 
 module.exports = function (context, timer) {
   Promise.all([
-    slack.wakeSlashCommand();
+    slack.wakeSlashCommand()
   ]).then(() => {
       context.log('success');
       context.done()
