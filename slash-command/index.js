@@ -32,7 +32,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
       .then(kegs => kegs.objects.filter(keg => keg.online))
       .then(online => online.map(keg => text.kegStatus(keg.beverage.name, keg.percent_full)))
       .then(messages => resolve(messages.join('\n')))
-      .catch(err => resolve(text.technicalSupport());
+      .catch(err => resolve(text.technicalSupport()));
   } else {
     resolve(text.cheers());
   }
