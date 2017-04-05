@@ -5,7 +5,7 @@ const request = require('request-promise-native');
 
 const getAnswer = (body) => new Promise((resolve, reject) => {
   const question = body.text;
-  const userName = body.userName;
+  const userName = body.user_name;
   if (!question || typeof question !== 'string') {
     resolve(text.greeting(userName));
   } else if (question.toLowerCase().indexOf('request body') > -1) {
@@ -44,7 +44,10 @@ const getAnswer = (body) => new Promise((resolve, reject) => {
 
 module.exports = function (context, req) {
   const body = qs.parse(req.body);
-  if (body.token === process.env.SLACK_TOKEN) {
+  if (process.env.SLACK_CHANNEL_NAMES.split(' ').indexOf(body.channel_name) === -1) {
+    context.log(`Kegbot not available in #${ body.channel_name }`);
+    context.done();
+  } else if (body.token === process.env.SLACK_TOKEN) {
     getAnswer(body)
       .then(answer => {
         context.res = services.slack.message(answer);
