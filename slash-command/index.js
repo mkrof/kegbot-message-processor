@@ -28,6 +28,7 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
     || (question.toLowerCase().indexOf('beer') > -1 && question.toLowerCase().indexOf('left') > -1)
     || (question.toLowerCase().indexOf('much') > -1 && question.toLowerCase().indexOf('left') > -1)
   ) {
+    /*
     request({
       uri: process.env.KEGBOT_SERVER_URL + '/api/kegs',
       qs: {
@@ -52,13 +53,12 @@ const getAnswer = (question, userName) => new Promise((resolve, reject) => {
         resolve(messages.join('\n'));
       })
       .catch(() => resolve(':electric_plug::zap:Contact technical support!'));
-    /*
+      */
     services.kegbot.kegs()
       .then(kegs => kegs.objects.filter(keg => keg.online))
       .then(online => online.map(keg => text.kegStatus(keg.beverage.name, keg.percent_full)))
       .then(messages => resolve(messages.join('\n')))
       .catch(() => resolve(text.technicalSupport()));
-    */
   } else {
     resolve(text.cheers());
   }
