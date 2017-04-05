@@ -22,7 +22,8 @@ module.exports = {
    `- ${ name }, a fine ${ style } produced by ${ producer }.`
   ),
   kegStatus: (name, percent) => {
-    return `- ${ name } *${ percent.toPrecision(3) }%* remaining! ${ percentEmoji(percent) }`;
+    return name + ' ' + percent;
+    //return `- ${ name } *${ percent.toPrecision(3) }%* remaining! ${ percentEmoji(percent) }`;
   },
   technicalSupport: () => ':electric_plug::zap:Contact technical support!',
 };
