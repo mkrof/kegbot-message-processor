@@ -44,10 +44,10 @@ const getAnswer = (body) => new Promise((resolve, reject) => {
 
 module.exports = function (context, req) {
   const body = qs.parse(req.body);
-  context.res = {
-    text: 'hello'
-  };
+  let res = Object.keys(body).map(key => `${ key }: ${ body[key] }\n`).join('');
+  context.res = res;
   context.done();
+
   if (process.env.SLACK_CHANNEL_NAMES.split(' ').indexOf(body.channel_name) === -1) {
     context.log(`Kegbot not available in #${ body.channel_name }`);
     context.done();
