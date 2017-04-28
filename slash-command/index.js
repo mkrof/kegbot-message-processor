@@ -44,6 +44,7 @@ const getAnswer = (body) => new Promise((resolve, reject) => {
 
 module.exports = function (context, req) {
   const body = qs.parse(req.body);
+  let res = `body: ${body}`;
   if (process.env.SLACK_CHANNEL_NAMES.split(' ').indexOf(body.channel_name) === -1) {
     context.log(`Kegbot not available in #${ body.channel_name }`);
     context.done();
@@ -58,7 +59,8 @@ module.exports = function (context, req) {
         context.done();
       });
   } else {
-    context.res = 'Invalid token.'
+    //context.res = 'Invalid token.'
+    context.res = res;
     context.done();
   }
 };
