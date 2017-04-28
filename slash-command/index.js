@@ -45,7 +45,9 @@ const getAnswer = (body) => new Promise((resolve, reject) => {
 module.exports = function (context, req) {
   const body = qs.parse(req.body);
   let res = Object.keys(body).map(key => `${ key }: ${ body[key] }\n`).join('');
-  context.res = res;
+  context.res = {
+    text: res
+  };
   context.done();
 
   if (process.env.SLACK_CHANNEL_NAMES.split(' ').indexOf(body.channel_name) === -1) {
