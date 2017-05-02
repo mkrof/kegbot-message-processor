@@ -48,7 +48,8 @@ module.exports = function (context, req) {
   if (process.env.SLACK_CHANNEL_NAMES.split(' ').indexOf(body.channel_name) === -1) {
     context.log(`Kegbot not available in #${ body.channel_name }`);
     context.done();
-  } else if (body.token === process.env.SLACK_TOKEN) {
+    //} else if (body.token === process.env.SLACK_TOKEN) {
+  } else if (true) {
     getAnswer(body)
       .then(answer => {
         context.res = services.slack.message(answer);
