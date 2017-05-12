@@ -2,7 +2,6 @@ const qs = require('qs');
 const services = require('../core/services');
 const text = require('../core/text');
 const request = require('request-promise-native');
-const osmosis = require('osmosis');
 
 const getAnswer = (body) => new Promise((resolve, reject) => {
   const question = body.text;
@@ -18,17 +17,6 @@ const getAnswer = (body) => new Promise((resolve, reject) => {
   } else if (question.toLowerCase().indexOf('dance') > -1) {
     resolve(text.dance(userName));
   } else if (question.toLowerCase().indexOf('total wine') > -1) {
-    const beers = [];
-    osmosis.get('http://www.totalwine.com/beer/kegs/c/41520?pagesize=200')
-      .find('h2.plp-product-title > a')
-      .set('beer')
-      .data(function(data) {
-        beers.push(data.beer);
-      }).done(() => {
-        resolve(
-          beers.join('\n');
-        );
-      });
   } else if (question.toLowerCase().indexOf('tap') > -1) {
     services.kegbot.taps()
       .then(taps => taps.objects.map(tap => {
