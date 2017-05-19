@@ -16,6 +16,7 @@ const getAnswer = (body) => new Promise((resolve, reject) => {
     resolve(text.help(userName));
   } else if (question.toLowerCase().indexOf('dance') > -1) {
     resolve(text.dance(userName));
+  } else if (question.toLowerCase().indexOf('total wine') > -1) {
   } else if (question.toLowerCase().indexOf('tap') > -1) {
     services.kegbot.taps()
       .then(taps => taps.objects.map(tap => {
@@ -48,7 +49,8 @@ module.exports = function (context, req) {
   if (process.env.SLACK_CHANNEL_NAMES.split(' ').indexOf(body.channel_name) === -1) {
     context.log(`Kegbot not available in #${ body.channel_name }`);
     context.done();
-  } else if (body.token === process.env.SLACK_TOKEN) {
+    //} else if (body.token === process.env.SLACK_TOKEN) {
+  } else if (true) {
     getAnswer(body)
       .then(answer => {
         context.res = services.slack.message(answer);
